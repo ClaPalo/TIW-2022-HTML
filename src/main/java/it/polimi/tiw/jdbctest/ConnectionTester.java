@@ -17,7 +17,7 @@ public class ConnectionTester extends HttpServlet {
 			throws ServletException, IOException {
 		final String DB_URL = "jdbc:mysql://localhost:3306/dbtest?serverTimezone=UTC";
 		final String USER = "root";
-		final String PASS = "My06p6muf2";
+		final String PASS = "My06p6muf2ciaoprova";
 		String result = "Connection worked";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
