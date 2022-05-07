@@ -105,8 +105,9 @@ public class CheckLogin extends HttpServlet {
 		} else {
 			request.getSession().setAttribute("user", user);
 			path = "/WEB-INF/homepage.html";
-			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-			dispatcher.forward(request, response);
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			templateEngine.process(path,  ctx, response.getWriter());
 		}
 	}
 
