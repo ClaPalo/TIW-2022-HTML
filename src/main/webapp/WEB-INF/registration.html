@@ -9,14 +9,17 @@
 <body>
     <h1>Registration page</h1>
 
-    <form action="#">
+    <form action="CreateUser" method="POST">
+    	<label for="username">E-mail</label><br>
+        <input type="text" id="mail" name="mail" required><br>
         <label for="username">Username</label><br>
-        <input type="text" id="username" name="username"><br>
+        <input type="text" id="username" name="username" required><br>
         <label for="password">Password</label><br>
-        <input type="password" id="password" name="password"><br>
+        <input type="password" id="password" name="password" required><br>
         <label for="confirmPassword">Repeat password</label><br>
-        <input type="password" id="confirmPassword" name="confirmPassword"><br><br>
+        <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
         <input type="submit" value="Confirm">
+        <p th:text="${ErrorMsg}"></p>
     </form>
 </body>
 </html>

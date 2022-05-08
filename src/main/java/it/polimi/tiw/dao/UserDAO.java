@@ -42,4 +42,44 @@ public class UserDAO {
 			
 		}
 	}
+	
+	public boolean isPresentUsername(String username) throws SQLException {
+		String query = "SELECT * FROM User WHERE username = ?";
+		try (PreparedStatement statement = connection.prepareStatement(query);) {
+			statement.setString(1, username);
+			try (ResultSet result = statement.executeQuery();) {
+				if (!result.isBeforeFirst()) {
+					return false;
+				} else {
+					return true;
+					
+				}
+			}
+		}
+	}
+	
+	public boolean isPresentMail(String mail) throws SQLException {
+		String query = "SELECT * FROM User WHERE mail = ?";
+		try (PreparedStatement statement = connection.prepareStatement(query);) {
+			statement.setString(1, mail);
+			try (ResultSet result = statement.executeQuery();) {
+				if (!result.isBeforeFirst()) {
+					return false;
+				} else {
+					return true;
+					
+				}
+			}
+		}
+	}
+	
+	public void addUser(String username, String password, String mail) throws SQLException {
+		String query = "INSERT INTO User (username, password, mail) VALUES (?,?,?)";
+		try (PreparedStatement statement = connection.prepareStatement(query);) {
+			statement.setString(1, username);
+			statement.setString(2, password);
+			statement.setString(3, mail);
+			statement.executeUpdate();
+		}
+	}
 }
