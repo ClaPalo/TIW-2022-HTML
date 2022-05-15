@@ -1,8 +1,16 @@
 package it.polimi.tiw.controllers;
 
 import it.polimi.tiw.beans.User;
+import it.polimi.tiw.beans.Album;
+import it.polimi.tiw.dao.AlbumDAO;
 
 import java.io.IOException;
+
+import java.sql.Connection;
+import it.polimi.tiw.utils.ConnectionHandler;
+import java.sql.SQLException;
+
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,14 +30,17 @@ import org.thymeleaf.context.WebContext;
 public class GoToHome extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	private Connection connection;
 	
 	public GoToHome() {
 		super();
 	}
 	
-	public void init() {
+	public void init() throws ServletException {
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(getServletContext());
 		templateResolver.setTemplateMode(TemplateMode.HTML);
+		
+		this.connection = ConnectionHandler.getConnection(getServletContext());
 		
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
@@ -48,10 +59,20 @@ public class GoToHome extends HttpServlet {
 		
 		User user = (User) session.getAttribute("user");
 		
+		AlbumDAO albumDAO = new AlbumDAO(this.connection);
+		List<Album> albums = null;
+		
+		try {
+			albums = albumDAO.getAlbumsByUser(user.getId());
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+		
 		String home_source_path = "/WEB-INF/homepage.html";
 		
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
 		wctx.setVariable("user", user);
+		wctx.setVariable("user_albums", albums);
 		this.templateEngine.process(home_source_path, wctx, response.getWriter());
 		
 	}

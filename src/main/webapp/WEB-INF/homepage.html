@@ -9,23 +9,20 @@
 </head>
 <body>
     <h1 th:text="'Welcome to your homepage ' + ${user.username}">Homepage</h1>
-    <span class="logout"><a href="index.html">Logout</a></span>
+    <br>
     <div class="tuoialbum">
         <table>
-            <tr>
-                <th>I tuoi album</th>
-            </tr>
-            <tr>
-                <td><a href="">Album 1</a></td>
-            </tr>
-            <tr>
-                <td><a href="">Album 2</a></td>
-            </tr>
-            <tr>
-                <td><a href="">Album 3</a></td>
-            </tr>
+            <thead>
+                <tr><th>Your albums</th></tr>
+            </thead>
+            <tbody th:remove="all-but-first">
+	            <tr th:each="album : ${user_albums}"><td><a href="" th:href="@{/AlbumInfo(id=${album.id})}" th:text="${album.title}">Album 1</a></td></tr>
+	            <tr><td><a href="">Album 2</a></td></tr>
+	            <tr><td><a href="">Album 3</a></td></tr>
+            </tbody>
         </table>
     </div>
+    <br>
     <div class="altrialbum">
         <table>
             <tr>
@@ -39,5 +36,7 @@
             </tr>
         </table>
     </div>
+    <br><br><br>
+    <span class="logout"><a href="index.html">Logout</a></span>
 </body>
 </html>
