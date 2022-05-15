@@ -8,7 +8,7 @@
     <title>HomePage</title>
 </head>
 <body>
-    <h1 th:text="${'Welcome to your homepage ' + session.user.username}">Homepage</h1>
+    <h1 th:text="'Welcome to your homepage ' + ${user.username}">Homepage</h1>
     <span class="logout"><a href="index.html">Logout</a></span>
     <div class="tuoialbum">
         <table>

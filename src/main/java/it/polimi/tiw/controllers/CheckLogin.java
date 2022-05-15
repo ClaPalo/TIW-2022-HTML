@@ -5,10 +5,8 @@ import java.sql.Connection;
 import it.polimi.tiw.utils.ConnectionHandler;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +54,7 @@ public class CheckLogin extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		this.doPost(request, response);
 	}
 
 	/**
@@ -92,11 +90,18 @@ public class CheckLogin extends HttpServlet {
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
+			path = getServletContext().getContextPath() + "/Home";
+			
 			request.getSession().setAttribute("user", user);
-			path = "/WEB-INF/homepage.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			templateEngine.process(path,  ctx, response.getWriter());
+			response.sendRedirect(path);
+		}
+	}
+	
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(this.connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
