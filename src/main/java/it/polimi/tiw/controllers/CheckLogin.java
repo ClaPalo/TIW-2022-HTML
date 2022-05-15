@@ -2,7 +2,7 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import it.polimi.tiw.utils.ConnectionHandler;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -41,21 +41,10 @@ public class CheckLogin extends HttpServlet {
     
     public void init() throws ServletException {
 		
-    	//TODO Fai una classe dedicata alla creazione della connessione
-    	try {
-			ServletContext context = getServletContext();
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			throw new UnavailableException("Can't load the driver");
-		} catch (SQLException e) {
-			throw new UnavailableException("Could't connect");
-		}
-		ServletContext servletContext = getServletContext();
+    	ServletContext servletContext = getServletContext();
+    	
+    	this.connection = ConnectionHandler.getConnection(servletContext);
+    	
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
