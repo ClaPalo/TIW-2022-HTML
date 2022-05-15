@@ -25,15 +25,13 @@
     <br>
     <div class="altrialbum">
         <table>
-            <tr>
-                <th>Album di altri utenti</th>
-            </tr>
-            <tr>
-                <td><a href="">Album di Cla</a></td>
-            </tr>
-            <tr>
-                <td><a href="">Album di Dodo</a></td>
-            </tr>
+        	<thead>
+	            <tr><th>Other users' albums</th></tr>
+	       	</thead>
+	       	<tbody th:remove="all-but-first">
+	            <tr th:each="album : ${other_albums}"><td><a href="" th:href="@{/AlbumInfo(id=${album.id})}" th:text="${album.title}">Album di Cla</a></td></tr>
+	            <tr><td><a href="">Album di Dodo</a></td></tr>
+	      	</tbody>
         </table>
     </div>
     <br><br><br>

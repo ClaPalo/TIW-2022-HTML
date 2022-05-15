@@ -18,10 +18,12 @@ public class AlbumDAO {
 		this.connection = connection;
 	}
 	
-	public List<Album> getAlbumsByUser(int userId) throws SQLException {
+	public List<Album> getAlbumsByUser(int userId, boolean thisUser) throws SQLException {
 		List<Album> albums = new ArrayList<>();
 		
-		String prepared_query = "SELECT * FROM ALBUM WHERE idUser = ? ORDER BY date DESC";
+		String operator = thisUser ? "=" : "<>"; 
+		
+		String prepared_query = "SELECT * FROM ALBUM WHERE idUser" + operator + "? ORDER BY date DESC";
 		
 		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
 		preparedStatement.setInt(1, userId);
@@ -31,7 +33,7 @@ public class AlbumDAO {
 		while (result.next()) {
 			Album album_to_add = new Album();
 			album_to_add.setUserId(userId);
-			album_to_add.setId(result.getInt("idUser"));
+			album_to_add.setId(result.getInt("idAlbum"));
 			album_to_add.setTitle(result.getString("title"));
 			album_to_add.setDateOfCreation(result.getDate("date"));
 			

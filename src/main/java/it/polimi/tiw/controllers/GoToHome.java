@@ -60,10 +60,12 @@ public class GoToHome extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		AlbumDAO albumDAO = new AlbumDAO(this.connection);
-		List<Album> albums = null;
+		List<Album> albumsByMe = null;
+		List<Album> albumsByOthers = null;
 		
 		try {
-			albums = albumDAO.getAlbumsByUser(user.getId());
+			albumsByMe = albumDAO.getAlbumsByUser(user.getId(), true);
+			albumsByOthers = albumDAO.getAlbumsByUser(user.getId(), false);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
@@ -72,7 +74,8 @@ public class GoToHome extends HttpServlet {
 		
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
 		wctx.setVariable("user", user);
-		wctx.setVariable("user_albums", albums);
+		wctx.setVariable("user_albums", albumsByMe);
+		wctx.setVariable("other_albums", albumsByOthers);
 		this.templateEngine.process(home_source_path, wctx, response.getWriter());
 		
 	}
