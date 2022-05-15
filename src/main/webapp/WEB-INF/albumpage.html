@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
     <title>Album Page</title>
 </head>
 <body>
-    <h1>Nome album</h1>
+    <h1 th:text="${album.title}">Nome album</h1>
     <span class="home"><a href="homepage.html">Torna alla home</a></span>
     <span class="logout"><a href="index.html">Logout</a></span>
 

@@ -29,7 +29,7 @@ public class AlbumDAO {
 		preparedStatement.setInt(1, userId);
 		
 		ResultSet result = preparedStatement.executeQuery();
-		
+		//TODO try
 		while (result.next()) {
 			Album album_to_add = new Album();
 			album_to_add.setUserId(userId);
@@ -41,5 +41,26 @@ public class AlbumDAO {
 		}
 		
 		return albums;
+	}
+	
+	public Album getAlbumById(int albumId) throws SQLException {
+		Album album = null;
+		
+		String prepared_query = "SELECT * FROM ALBUM WHERE idAlbum = ?";
+		
+		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
+		preparedStatement.setInt(1, albumId);
+		
+		ResultSet result = preparedStatement.executeQuery();
+		
+		if (result.next()) {
+			album = new Album();
+			album.setId(result.getInt("idAlbum"));
+			album.setTitle(result.getString("title"));
+			album.setDateOfCreation(result.getDate("date"));
+			album.setUserId(result.getInt("idUser"));
+		}
+		
+		return album;
 	}
 }
