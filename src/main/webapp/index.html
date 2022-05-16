@@ -13,13 +13,13 @@
 	
 	    <form action="CheckLogin" method="POST">
 	        <label for="nickname">Username</label><br>
-	        <input type="text" id="nickname" name="nickname" required><br>
+	        <input type="text" id="nickname" name="nickname" required><br><br>
 	        <label for="password">Password</label><br>
 	        <input type="password" id="password" name="password" required><br><br>
 	        <input type="submit" value="Login">
 	        <p th:text="${ErrorMsg}"></p> 
 	    </form>
-	    <p><a href="GoToRegistration">Crea una nuovo account</a></p>
+	    <p><a href="GoToRegistration">...or create a new account</a></p>
     </div>
 </body>
 </html>
