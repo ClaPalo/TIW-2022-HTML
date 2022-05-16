@@ -1,6 +1,7 @@
 div.box {
 	border: solid;
 	border-width: thin;
+	border-radius: 10px;
 	text-align: center;
 	margin-left: 40%;
 	margin-right: 40%;

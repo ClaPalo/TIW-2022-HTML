@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <LINK rel="stylesheet" type="text/css" href="stylesheets/home-style.css">
     <title>Registration</title>
 </head>
 <body>
-    <h1>Registration page</h1>
-
-    <form action="CreateUser" method="POST">
-    	<label for="username">E-mail</label><br>
-        <input type="text" id="mail" name="mail" required><br>
-        <label for="username">Username</label><br>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <label for="confirmPassword">Repeat password</label><br>
-        <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
-        <input type="submit" value="Confirm">
-        <p th:text="${ErrorMsg}"></p>
-    </form>
+	<div class="box">
+	    <h1>Registration page</h1>
+	
+	    <form action="CreateUser" method="POST">
+	    	<label for="username">E-mail</label><br>
+	        <input type="text" id="mail" name="mail" required><br><br>
+	        <label for="username">Username</label><br>
+	        <input type="text" id="username" name="username" required><br><br>
+	        <label for="password">Password</label><br>
+	        <input type="password" id="password" name="password" required><br><br>
+	        <label for="confirmPassword">Repeat password</label><br>
+	        <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
+	        <input type="submit" value="Confirm">
+	        <p th:text="${ErrorMsg}"></p><br>
+	        <p>Already a user? <a href="index.html">Login</a></p>
+	    </form>
+	</div>
 </body>
 </html>
