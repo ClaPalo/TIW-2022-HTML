@@ -9,16 +9,15 @@
 <body>
     <h1 th:text="${album.title}">Album name</h1>
     <span class="home"><a href="Home">Back to home</a></span>
-    <span class="logout"><a href="Logout">Logout</a></span>
 
-    <div class="images">
+    <div class="images" align="center">
         <table>
             <tr>
                 <td><button class="prec_button"><a href="">PRECEDENTI</a></button></td>
                 <td>
 	                <table>
 	                	<tr th:remove="all-but-first">
-			                <td th:each="image: ${images}"><img src="" th:src="@{${image.imgPath}}" alt="img1"></td>
+			                <td th:each="image: ${images}" th:if="${imageStat.count <= 5}"><a th:href="@{/AlbumInfo(id=${album.id},imgId=${image.id})}"><img src="" th:src="@{${image.imgPath}}" alt="img1" width=120></a></td>
 			                <td><img src="" alt="img2"></td>
 			                <td><img src="" alt="img3"></td>
 			                <td><img src="" alt="img4"></td>
@@ -31,7 +30,7 @@
         </table><br><br>
     </div>
     <div class="details" th:if="${mainImage}">
-        <img src="" alt="image">
+        <img src="" th:src="@{${mainImage.imgPath}}" alt="image">
         <table class="Comments">
             <tr>
                 <th></th>
@@ -49,5 +48,8 @@
             <input type="submit" value="Send">
         </form>
     </div>
+    
+    <span class="logout"><a href="Logout">Logout</a></span>
+    
 </body>
 </html>

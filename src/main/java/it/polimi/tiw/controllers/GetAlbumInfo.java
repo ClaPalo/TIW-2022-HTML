@@ -89,7 +89,7 @@ public class GetAlbumInfo extends HttpServlet {
 			}
 			
 			if (mainImage == null) {
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested album does not exist.");
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested image either does not exist or does not belong to this album.");
 				return;
 			}
 		}
@@ -104,7 +104,7 @@ public class GetAlbumInfo extends HttpServlet {
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
 		wctx.setVariable("album", album);
 		wctx.setVariable("images", images);
-		wctx.setVariable("main-image", mainImage);
+		wctx.setVariable("mainImage", mainImage);
 	
 		String source_path = "/WEB-INF/albumpage.html";
 		this.templateEngine.process(source_path, wctx, response.getWriter());

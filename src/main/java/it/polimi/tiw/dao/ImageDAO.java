@@ -59,7 +59,7 @@ public class ImageDAO {
 		
 		if (result.next()) {
 			image = new Image();
-			image.setId(result.getInt("idAlbum"));
+			image.setId(result.getInt("idImage"));
 			image.setTitle(result.getString("title"));
 			image.setText(result.getString("text"));
 			image.setDateOfCreation(result.getDate("date"));

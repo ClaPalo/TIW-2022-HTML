@@ -87,3 +87,4 @@ local.properties
 #.project
 
 /src/main/webapp/WEB-INF/images/
+/src/main/webapp/images/
