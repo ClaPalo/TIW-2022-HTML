@@ -19,6 +19,10 @@ import org.thymeleaf.context.WebContext;
 
 import it.polimi.tiw.dao.AlbumDAO;
 import it.polimi.tiw.beans.Album;
+import it.polimi.tiw.dao.ImageDAO;
+import it.polimi.tiw.beans.Image;
+
+import java.util.List;
 
 @WebServlet("/AlbumInfo")
 public class GetAlbumInfo extends HttpServlet {
@@ -43,8 +47,18 @@ public class GetAlbumInfo extends HttpServlet {
 		
 		AlbumDAO albumDAO = new AlbumDAO(this.connection);
 		Album album = null;
+		ImageDAO imageDAO = new ImageDAO(this.connection);
+		Image mainImage = null;
+		List<Image> images = null;
 		
-		int albumId = Integer.parseInt(request.getParameter("id"));
+		Integer albumId = null, imageId = null;
+		
+		try {
+			albumId = Integer.parseInt(request.getParameter("id"));
+		} catch (NumberFormatException | NullPointerException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		
 		try {
 			album = albumDAO.getAlbumById(albumId);
@@ -52,19 +66,53 @@ public class GetAlbumInfo extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 		
-		if (album != null) {
-			WebContext wctx = new WebContext(request, response, context, request.getLocale());
-			wctx.setVariable("album", album);
-		
-			String source_path = "/WEB-INF/albumpage.html";
-			this.templateEngine.process(source_path, wctx, response.getWriter());
-		} else {
+		if (album == null) {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested album does not exist.");
+			return;
 		}
+		
+		try {
+			String imgId_str = request.getParameter("imgId");
+			if (imgId_str != null) 
+				imageId = Integer.parseInt(request.getParameter("imgId"));
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_CONFLICT);
+			return;
+		}
+		
+		if (imageId != null) {
+			try {
+				mainImage = imageDAO.getImageById(imageId);
+			} catch (SQLException e) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				return;
+			}
+			
+			if (mainImage == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested album does not exist.");
+				return;
+			}
+		}
+		
+		try {
+			images = imageDAO.getImagesByAlbum(albumId);
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not load images for this album.");
+			return;
+		}
+		
+		WebContext wctx = new WebContext(request, response, context, request.getLocale());
+		wctx.setVariable("album", album);
+		wctx.setVariable("images", images);
+		wctx.setVariable("main-image", mainImage);
+	
+		String source_path = "/WEB-INF/albumpage.html";
+		this.templateEngine.process(source_path, wctx, response.getWriter());
+		
 	}
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 	
 	public void destroy() {
