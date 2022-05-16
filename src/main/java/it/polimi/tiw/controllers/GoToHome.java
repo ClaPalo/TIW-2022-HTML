@@ -52,11 +52,6 @@ public class GoToHome extends HttpServlet {
 		ServletContext context = getServletContext();
 		HttpSession session = request.getSession();
 		
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(context.getContextPath());
-			return;
-		}
-		
 		User user = (User) session.getAttribute("user");
 		
 		AlbumDAO albumDAO = new AlbumDAO(this.connection);

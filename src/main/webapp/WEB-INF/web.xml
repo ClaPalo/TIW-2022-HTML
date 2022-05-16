@@ -3,21 +3,30 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
 	<display-name>Album-Gallery</display-name>
 	<context-param>
     	<param-name>dbUrl</param-name>
-    	<param-value>jdbc:mysql://localhost:3306/image_gallery?serverTimezone=UTC</param-value>
+   		<param-value>jdbc:mysql://localhost:3306/image_gallery?serverTimezone=UTC</param-value>
   	</context-param>
   	<context-param>
-    	<param-name>dbUser</param-name>
-    	<param-value>root</param-value>
+   		<param-name>dbUser</param-name>
+   		<param-value>root</param-value>
   	</context-param>
   	<context-param>
-	    <param-name>dbPassword</param-name>
-	    <param-value>My06p6muf2</param-value>
-	  </context-param>
-	  <context-param>
-	    <param-name>dbDriver</param-name>
-	    <param-value>com.mysql.cj.jdbc.Driver</param-value>
-	  </context-param>
+		<param-name>dbPassword</param-name>
+		<param-value>My06p6muf2</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbDriver</param-name>
+		<param-value>com.mysql.cj.jdbc.Driver</param-value>
+	</context-param>
+	<filter>
+	<filter-name>checklogin</filter-name>
+		<filter-class>it.polimi.tiw.filters.Authenticator</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>checklogin</filter-name>
+		<url-pattern>/Home</url-pattern>
+		<url-pattern>/AlbumInfo</url-pattern>
+	</filter-mapping>
 	<welcome-file-list>
-    	<welcome-file>index.html</welcome-file>
+   		<welcome-file>index.html</welcome-file>
   	</welcome-file-list>
 </web-app>
