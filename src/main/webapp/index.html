@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <LINK rel="stylesheet" type="text/css" href="stylesheets/home-style.css">
     <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
-
-    <form action="CheckLogin" method="POST">
-        <label for="nickname">Username</label><br>
-        <input type="text" id="nickname" name="nickname" required><br>
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-        <p th:text="${ErrorMsg}"></p> 
-    </form>
-    <p><a href="GoToRegistration">Crea una nuovo account</a></p>
+	<div class="box">
+	    <h1>Login</h1>
+	
+	    <form action="CheckLogin" method="POST">
+	        <label for="nickname">Username</label><br>
+	        <input type="text" id="nickname" name="nickname" required><br>
+	        <label for="password">Password</label><br>
+	        <input type="password" id="password" name="password" required><br><br>
+	        <input type="submit" value="Login">
+	        <p th:text="${ErrorMsg}"></p> 
+	    </form>
+	    <p><a href="GoToRegistration">Crea una nuovo account</a></p>
+    </div>
 </body>
 </html>
