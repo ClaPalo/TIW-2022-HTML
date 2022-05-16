@@ -8,7 +8,7 @@ public class Image {
 	private String title;
 	private String text;
 	private Date dateOfCreation;
-	private String img_path;
+	private String imgPath;
 	
 	
 	public int getId() {
@@ -32,7 +32,7 @@ public class Image {
 	}
 	
 	public String getImgPath() {
-		return this.img_path;
+		return this.imgPath;
 	}
 	
 	
@@ -57,7 +57,7 @@ public class Image {
 		this.dateOfCreation = dateOfCreation;
 	}
 	
-	public void setImgPath(String img_path) {
-		this.img_path = img_path;
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 }

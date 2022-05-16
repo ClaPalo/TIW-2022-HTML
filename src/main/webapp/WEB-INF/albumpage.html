@@ -15,11 +15,17 @@
         <table>
             <tr>
                 <td><button class="prec_button"><a href="">PRECEDENTI</a></button></td>
-                <td><img src="" alt="img1"></td>
-                <td><img src="" alt="img2"></td>
-                <td><img src="" alt="img3"></td>
-                <td><img src="" alt="img4"></td>
-                <td><img src="" alt="img5"></td>
+                <td>
+	                <table>
+	                	<tr th:remove="all-but-first">
+			                <td th:each="image: ${images}"><img src="" th:src="@{${image.imgPath}}" alt="img1"></td>
+			                <td><img src="" alt="img2"></td>
+			                <td><img src="" alt="img3"></td>
+			                <td><img src="" alt="img4"></td>
+			                <td><img src="" alt="img5"></td>
+		                <tr>
+	                </table>
+	            </td>
                 <td><button class="succ_button"><a href="">SUCCESSIVE</a></button></td>
             </tr>
         </table><br><br>
