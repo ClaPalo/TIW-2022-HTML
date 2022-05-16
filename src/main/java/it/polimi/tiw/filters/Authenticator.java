@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+//TODO change class name
 public class Authenticator implements Filter {
 	
 	public Authenticator() {
