@@ -30,7 +30,8 @@
         </table><br><br>
     </div>
     <div class="details" th:if="${mainImage}">
-        <img src="" th:src="@{${mainImage.imgPath}}" alt="image">
+        <div align="center"><img src="" th:src="@{${mainImage.imgPath}}" alt="image"></div>
+        <br><br>
         <table class="Comments">
             <tr>
                 <th></th>
@@ -49,6 +50,7 @@
         </form>
     </div>
     
+    <br><br>
     <span class="logout"><a href="Logout">Logout</a></span>
     
 </body>
