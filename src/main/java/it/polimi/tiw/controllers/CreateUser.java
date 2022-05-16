@@ -89,13 +89,13 @@ public class CreateUser extends HttpServlet {
 				sendError(request, response, "Questo username e gia presente");
 				return;
 			} else if (userDao.isPresentMail(mail)) {
-				sendError(request, response, "Questa e-mail e gia presente");
+				sendError(request, response, "This email is already present");
 				return;
 			} else if (password.length() < 5) {
-				sendError(request, response, "La password deve essere di almeno 5 caratteri");
+				sendError(request, response, "Password must be at least 5 characters long");
 				return;
 			} else if (!password.equals(repPassword)) {
-				sendError(request, response, "Le password non coincidono");
+				sendError(request, response, "Passwords do not coincide");
 				return;
 			}
 		} catch (SQLException e) {
@@ -113,7 +113,7 @@ public class CreateUser extends HttpServlet {
 		
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("ErrorMsg", "Utente creato");
+		ctx.setVariable("ErrorMsg", "User created");
 		String path = "/index.html";
 		templateEngine.process(path, ctx, response.getWriter());
 
