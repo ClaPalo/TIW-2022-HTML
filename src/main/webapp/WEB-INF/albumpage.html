@@ -10,7 +10,7 @@
     <h1 th:text="${album.title}">Album name</h1>
     <span class="home"><a href="Home">Back to home</a></span>
 
-    <div class="images" align="center">
+    <div class="images" align="center" th:if="${not images.isEmpty()}">
     
     	<button th:if="${page > 0}" class="prec_button"><a href="" th:href="@{/AlbumInfo(id=${album.id},page=${page - 1})}">PREVIOUS</a></button>
     	<table>
@@ -27,9 +27,10 @@
         <br><br>
         
     </div>
+    <div align="center" th:if="${images.isEmpty()}">This album is empty :(</div>
     
     <div class="details" th:if="${mainImage}">
-        <div align="center"><img src="" th:src="@{${mainImage.imgPath}}" alt="image"></div>
+        <div align="center"><img src="" th:src="@{${mainImage.imgPath}}" alt="image" width=1000></div>
         <br><br>
         <table class="Comments">
             <thead><tr>
