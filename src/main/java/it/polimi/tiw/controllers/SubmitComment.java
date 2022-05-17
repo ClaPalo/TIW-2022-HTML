@@ -67,6 +67,7 @@ public class SubmitComment extends HttpServlet {
 		String text = null;
 		Integer imageID = null;
 		Integer albumID = null;
+		Integer page = null;
 		User user = (User) request.getSession().getAttribute("user");
 		text = request.getParameter("text");
 		
@@ -77,12 +78,14 @@ public class SubmitComment extends HttpServlet {
 		}
 		
 		if (text.length() > 180) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is too long.");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is too long."); //TODO manda messaggino forse
+			return;
 		}
 		
 		try {
 			imageID = Integer.parseInt(request.getParameter("imageId"));
 			albumID = Integer.parseInt(request.getParameter("albumId"));
+			page = Integer.parseInt(request.getParameter("page"));
 		} catch (NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing information for posting a comment.");
 			return;
@@ -108,7 +111,7 @@ public class SubmitComment extends HttpServlet {
 			return;
 		}
 		
-		response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumID.toString() + "&imgId=" + imageID.toString());
+		response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumID.toString() + "&page=" + page.toString() + "&imgId=" + imageID.toString());
 	}
 	
 	public void destroy() {

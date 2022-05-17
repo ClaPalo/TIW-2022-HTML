@@ -55,12 +55,13 @@ public class GetAlbumInfo extends HttpServlet {
 		CommentDAO commentDAO = new CommentDAO(this.connection);
 		List<Comment> comments = null;
 		
-		Integer albumId = null, imageId = null;
+		Integer albumId = null, imageId = null, page = null;
 		
 		try {
 			albumId = Integer.parseInt(request.getParameter("id"));
+			page = Integer.parseInt(request.getParameter("page"));
 		} catch (NumberFormatException | NullPointerException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing album and/or page parameters.");
 			return;
 		}
 		
@@ -68,6 +69,7 @@ public class GetAlbumInfo extends HttpServlet {
 			album = albumDAO.getAlbumById(albumId);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
 		}
 		
 		if (album == null) {
@@ -110,11 +112,16 @@ public class GetAlbumInfo extends HttpServlet {
 			return;
 		}
 		
+		if (images.size() / 5 < page) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album page does not exist.");
+		}
+		
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
 		wctx.setVariable("album", album);
 		wctx.setVariable("images", images);
 		wctx.setVariable("mainImage", mainImage);
 		wctx.setVariable("comments", comments);
+		wctx.setVariable("page", page);
 		
 		String source_path = "/WEB-INF/albumpage.html";
 		this.templateEngine.process(source_path, wctx, response.getWriter());

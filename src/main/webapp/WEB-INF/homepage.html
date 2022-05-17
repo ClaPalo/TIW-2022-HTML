@@ -16,7 +16,7 @@
                 <tr><th>Your albums</th></tr>
             </thead>
             <tbody th:remove="all-but-first">
-	            <tr th:each="album : ${user_albums}"><td><a href="" th:href="@{/AlbumInfo(id=${album.id})}" th:text="${album.title}">Album 1</a></td></tr>
+	            <tr th:each="album : ${user_albums}"><td><a href="" th:href="@{/AlbumInfo(id=${album.id},page=0)}" th:text="${album.title}">Album 1</a></td></tr>
 	            <tr><td><a href="">Album 2</a></td></tr>
 	            <tr><td><a href="">Album 3</a></td></tr>
             </tbody>
@@ -29,7 +29,7 @@
 	            <tr><th>Other users' albums</th></tr>
 	       	</thead>
 	       	<tbody th:remove="all-but-first">
-	            <tr th:each="album : ${other_albums}"><td><a href="" th:href="@{/AlbumInfo(id=${album.id})}" th:text="${album.title}">Album di Cla</a></td></tr>
+	            <tr th:each="album : ${other_albums}"><td><a href="" th:href="@{/AlbumInfo(id=${album.id}, page=0)}" th:text="${album.title}">Album di Cla</a></td></tr>
 	            <tr><td><a href="">Album di Dodo</a></td></tr>
 	      	</tbody>
         </table>

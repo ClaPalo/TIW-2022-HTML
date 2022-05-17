@@ -11,24 +11,23 @@
     <span class="home"><a href="Home">Back to home</a></span>
 
     <div class="images" align="center">
-        <table>
-            <tr>
-                <td><button class="prec_button"><a href="">PRECEDENTI</a></button></td>
-                <td>
-	                <table>
-	                	<tr th:remove="all-but-first">
-			                <td th:each="image: ${images}" th:if="${imageStat.count <= 5}"><a th:href="@{/AlbumInfo(id=${album.id},imgId=${image.id})}"><img src="" th:src="@{${image.imgPath}}" alt="img1" width=120></a></td>
+    
+    	<button th:if="${page > 0}" class="prec_button"><a href="" th:href="@{/AlbumInfo(id=${album.id},page=${page - 1})}">PREVIOUS</a></button>
+    	<table>
+        	<tr th:remove="all-but-first">
+			                <td th:each="image: ${images}" th:if="${imageStat.index >= 5*page and imageStat.index < 5*(page+1)}"><a th:href="@{/AlbumInfo(id=${album.id},page=${page},imgId=${image.id})}"><img src="" th:src="@{${image.imgPath}}" alt="img1" width=120></a></td>
 			                <td><img src="" alt="img2"></td>
 			                <td><img src="" alt="img3"></td>
 			                <td><img src="" alt="img4"></td>
 			                <td><img src="" alt="img5"></td>
 		                <tr>
-	                </table>
-	            </td>
-                <td><button class="succ_button"><a href="">SUCCESSIVE</a></button></td>
-            </tr>
-        </table><br><br>
+            <tr>
+        </table>
+        <button th:if="${page < (images.size() / 5 + (images.size()%5 == 0 ? 0 : 1)) - 1}" class="succ_button"><a href="" th:href="@{/AlbumInfo(id=${album.id},page=${page + 1})}">NEXT</a></button>
+        <br><br>
+        
     </div>
+    
     <div class="details" th:if="${mainImage}">
         <div align="center"><img src="" th:src="@{${mainImage.imgPath}}" alt="image"></div>
         <br><br>
@@ -53,6 +52,7 @@
             <input type="text" placeholder="Comment..." maxlength="180" name="text" required>
             <input type="hidden" th:value="${album.id}" name="albumId">
             <input type="hidden" th:value="${mainImage.id}" name="imageId">
+            <input type="hidden" th:value="${page}" name="page">
             <input type="submit" value="Send">
         </form>
     </div>
