@@ -19,7 +19,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.User;
-import it.polimi.tiw.beans.Comment;
 import it.polimi.tiw.dao.CommentDAO;
 
 /**
@@ -64,25 +63,39 @@ public class SubmitComment extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String text = null;
+		Integer imageID = null;
+		Integer albumID = null;
 		User user = (User) request.getSession().getAttribute("user");
 		text = request.getParameter("text");
 		
+		
 		if (user == null || text == null || text.isEmpty()) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing information for posting a comment."); //TODO Manda solo un messaggino a schermo
+			return;
+		}
+		
+		try {
+			imageID = Integer.parseInt(request.getParameter("imageId"));
+			albumID = Integer.parseInt(request.getParameter("albumId"));
+		} catch (NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing information for posting a comment.");
 			return;
 		}
 		
+		//TODO Controlla che imageID esista nel DB
+		//TODO Text non troppo lungo
+		
+		
 		CommentDAO commentDAO = new CommentDAO(connection);
-		Comment comment = null;
 		
 		try {
-			comment = commentDAO.addComment(user, text);
+			commentDAO.addComment(user.getId(), text, imageID);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		
-		response.sendRedirect("");
+		response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumID.toString() + "&imgId=" + imageID.toString());
 	}
 	
 	public void destroy() {
