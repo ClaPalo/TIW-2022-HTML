@@ -69,4 +69,18 @@ public class ImageDAO {
 		
 		return image;
 	}
+	
+	public boolean imageIsInAlbum(int idImage, int idAlbum) throws SQLException {
+		
+		String prepared_query = "SELECT * FROM AlbumImages WHERE (idImage = ? and idAlbum = ?)";
+		
+		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
+		preparedStatement.setInt(1, idImage);
+		preparedStatement.setInt(2, idAlbum);
+		
+		ResultSet result = preparedStatement.executeQuery();
+		
+		return (result.next());
+		
+	}
 }

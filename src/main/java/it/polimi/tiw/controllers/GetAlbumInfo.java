@@ -85,15 +85,19 @@ public class GetAlbumInfo extends HttpServlet {
 		}
 		
 		if (imageId != null) {
+			
+			boolean isInAlbum = false;
+			
 			try {
 				mainImage = imageDAO.getImageById(imageId);
 				comments = commentDAO.getCommentsByImage(imageId);
+				isInAlbum = imageDAO.imageIsInAlbum(imageId, albumId);
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				return;
 			}
 			
-			if (mainImage == null) {
+			if (mainImage == null || !isInAlbum) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested image either does not exist or does not belong to this album.");
 				return;
 			}
