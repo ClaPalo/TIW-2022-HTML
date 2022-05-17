@@ -23,8 +23,9 @@ public class CommentDAO {
 		
 		String prepared_query = 
 					"SELECT * "
-				+ 	"FROM Comment C JOIN User U on (C.idUser = U.idUser)"
-				+ 	"WHERE C.idImage = ?";
+				+ 	"FROM Comment C JOIN User U on (C.idUser = U.idUser) "
+				+ 	"WHERE C.idImage = ? "
+				+ 	"ORDER BY C.idComment ASC";
 		
 		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
 		preparedStatement.setInt(1, imageId);
@@ -48,7 +49,7 @@ public class CommentDAO {
 	public Comment getCommentById(int commentId) throws SQLException {
 		Comment comment = null;
 		
-		String prepared_query = "SELECT * FROM ALBUM WHERE idAlbum = ?";
+		String prepared_query = "SELECT * FROM Comment WHERE idComment = ?";
 		
 		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
 		preparedStatement.setInt(1, commentId);
@@ -67,7 +68,7 @@ public class CommentDAO {
 	}
 	
 	public void addComment(int userId, String text, int imageId) throws SQLException {
-		String prepared_query = "INSERT INTO Comment (text, idUser, idImage) VALUES (?. ?. ?)";
+		String prepared_query = "INSERT INTO Comment (text, idUser, idImage) VALUES (?, ?, ?)";
 		
 		PreparedStatement statement = connection.prepareStatement(prepared_query);
 		statement.setString(1, text);

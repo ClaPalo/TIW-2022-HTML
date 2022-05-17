@@ -70,7 +70,7 @@ public class SubmitComment extends HttpServlet {
 		
 		
 		if (user == null || text == null || text.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing information for posting a comment."); //TODO Manda solo un messaggino a schermo
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing user or text."); //TODO Manda solo un messaggino a schermo
 			return;
 		}
 		
@@ -94,7 +94,6 @@ public class SubmitComment extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
-		
 		response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumID.toString() + "&imgId=" + imageID.toString());
 	}
 	

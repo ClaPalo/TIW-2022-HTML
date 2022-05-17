@@ -80,7 +80,7 @@ public class GetAlbumInfo extends HttpServlet {
 			if (imgId_str != null) 
 				imageId = Integer.parseInt(request.getParameter("imgId"));
 		} catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_CONFLICT);
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
 		
