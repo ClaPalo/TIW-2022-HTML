@@ -19,7 +19,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.User;
+import it.polimi.tiw.beans.Image;
 import it.polimi.tiw.dao.CommentDAO;
+import it.polimi.tiw.dao.ImageDAO;
 
 /**
  * Servlet implementation class CheckLogin
@@ -74,6 +76,10 @@ public class SubmitComment extends HttpServlet {
 			return;
 		}
 		
+		if (text.length() > 180) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is too long.");
+		}
+		
 		try {
 			imageID = Integer.parseInt(request.getParameter("imageId"));
 			albumID = Integer.parseInt(request.getParameter("albumId"));
@@ -82,18 +88,26 @@ public class SubmitComment extends HttpServlet {
 			return;
 		}
 		
-		//TODO Controlla che imageID esista nel DB
-		//TODO Text non troppo lungo
-		
-		
+		ImageDAO imageDAO = new ImageDAO(this.connection);
+		Image img = null;
 		CommentDAO commentDAO = new CommentDAO(connection);
 		
 		try {
+			
+			img = imageDAO.getImageById(imageID);
+			
+			if (img == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "The image you want to post a comment on does not exist.");
+				return;
+			}
+			
 			commentDAO.addComment(user.getId(), text, imageID);
+			
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
+		
 		response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumID.toString() + "&imgId=" + imageID.toString());
 	}
 	

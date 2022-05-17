@@ -50,7 +50,7 @@
 
         <h4>Leave a comment</h4>
         <form action="SubmitComment" method="POST">
-            <input type="text" placeholder="Comment..." maxlength="150" name="text" required>
+            <input type="text" placeholder="Comment..." maxlength="180" name="text" required>
             <input type="hidden" th:value="${album.id}" name="albumId">
             <input type="hidden" th:value="${mainImage.id}" name="imageId">
             <input type="submit" value="Send">
