@@ -4,6 +4,7 @@ public class Comment {
 	private int id;
 	private String text;
 	private int idUser;
+	private String username;
 	private int idImage;
 	
 	public int getId() {
@@ -28,6 +29,14 @@ public class Comment {
 	
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
+	}
+	
+	public String getUsername() {
+		return this.username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public int getIdImage() {

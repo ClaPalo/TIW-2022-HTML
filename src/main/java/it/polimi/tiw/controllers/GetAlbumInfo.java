@@ -21,6 +21,8 @@ import it.polimi.tiw.dao.AlbumDAO;
 import it.polimi.tiw.beans.Album;
 import it.polimi.tiw.dao.ImageDAO;
 import it.polimi.tiw.beans.Image;
+import it.polimi.tiw.dao.CommentDAO;
+import it.polimi.tiw.beans.Comment;
 
 import java.util.List;
 
@@ -50,6 +52,8 @@ public class GetAlbumInfo extends HttpServlet {
 		ImageDAO imageDAO = new ImageDAO(this.connection);
 		Image mainImage = null;
 		List<Image> images = null;
+		CommentDAO commentDAO = new CommentDAO(this.connection);
+		List<Comment> comments = null;
 		
 		Integer albumId = null, imageId = null;
 		
@@ -83,6 +87,7 @@ public class GetAlbumInfo extends HttpServlet {
 		if (imageId != null) {
 			try {
 				mainImage = imageDAO.getImageById(imageId);
+				comments = commentDAO.getCommentsByImage(imageId);
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				return;
@@ -105,7 +110,8 @@ public class GetAlbumInfo extends HttpServlet {
 		wctx.setVariable("album", album);
 		wctx.setVariable("images", images);
 		wctx.setVariable("mainImage", mainImage);
-	
+		wctx.setVariable("comments", comments);
+		
 		String source_path = "/WEB-INF/albumpage.html";
 		this.templateEngine.process(source_path, wctx, response.getWriter());
 		

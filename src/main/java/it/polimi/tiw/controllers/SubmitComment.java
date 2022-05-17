@@ -19,21 +19,22 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.User;
-import it.polimi.tiw.dao.UserDAO;
+import it.polimi.tiw.beans.Comment;
+import it.polimi.tiw.dao.CommentDAO;
 
 /**
  * Servlet implementation class CheckLogin
  */
-@WebServlet("/CheckLogin")
-public class CheckLogin extends HttpServlet {
+@WebServlet("/SubmitComment")
+public class SubmitComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CheckLogin() {
+    public SubmitComment() {
         super();
     }
     
@@ -61,40 +62,27 @@ public class CheckLogin extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = null;
-		String password = null;
 		
-		username = request.getParameter("nickname");
-		password = request.getParameter("password");
+		String text = null;
+		User user = (User) request.getSession().getAttribute("user");
+		text = request.getParameter("text");
 		
-		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credentials");
+		if (user == null || text == null || text.isEmpty()) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing information for posting a comment.");
 			return;
 		}
 		
-		UserDAO userDao = new UserDAO(connection);
-		User user = null;
+		CommentDAO commentDAO = new CommentDAO(connection);
+		Comment comment = null;
 		
 		try {
-			user = userDao.checkCredentials(username, password);
+			comment = commentDAO.addComment(user, text);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		
-		String path;
-		if (user == null) {
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("ErrorMsg", "Nome utente o password errati");
-			path = "/index.html";
-			templateEngine.process(path, ctx, response.getWriter());
-		} else {
-			path = getServletContext().getContextPath() + "/Home";
-			
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect(path);
-		}
+		response.sendRedirect("");
 	}
 	
 	public void destroy() {
