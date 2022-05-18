@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -82,6 +85,12 @@ public class CreateUser extends HttpServlet {
 			return;
 		}
 		
+		
+		if (!isValidMail(mail)) {
+			sendError(request, response, "Mail non valida");
+			return;
+		}
+		
 		UserDAO userDao = new UserDAO(connection);
 		
 		try {
@@ -125,6 +134,18 @@ public class CreateUser extends HttpServlet {
 		ctx.setVariable("ErrorMsg", message);
 		String path = "/WEB-INF/registration.html";
 		templateEngine.process(path, ctx, response.getWriter());
+	}
+	
+	private boolean isValidMail(String email) {
+		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+                  
+		Pattern pat = Pattern.compile(emailRegex);
+		if (email == null)
+			return false;
+		return pat.matcher(email).matches();
 	}
 
 }
