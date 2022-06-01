@@ -3,6 +3,7 @@ package it.polimi.tiw.dao;
 import it.polimi.tiw.beans.Album;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,5 +63,14 @@ public class AlbumDAO {
 		}
 		
 		return album;
+	}
+	
+	public void createEmptyAlbum(String name, int userId) throws SQLException {
+		String prepared_query = "INSERT INTO Album (title, date, idUser) VALUES (?, CURRENT_TIMESTAMP(),?)";
+		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
+		preparedStatement.setString(1, name);
+		preparedStatement.setInt(2, userId);
+		
+		preparedStatement.executeUpdate();
 	}
 }

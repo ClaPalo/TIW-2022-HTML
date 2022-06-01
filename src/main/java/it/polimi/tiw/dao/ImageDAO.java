@@ -83,4 +83,39 @@ public class ImageDAO {
 		return (result.next());
 		
 	}
+	
+	public void addImageToAlbumById(int albumId, int imageId) throws SQLException {
+		String prep_query = "INSERT INTO AlbumImages (idAlbum, idImage) VALUES (?,?)";
+		
+		PreparedStatement prepStat = this.connection.prepareStatement(prep_query);
+		prepStat.setInt(1, albumId);
+		prepStat.setInt(2, imageId);
+		
+		prepStat.executeUpdate();
+	}
+	
+	public List<Image> getImagesByUserNotInAlbum(int userId, int albumId) throws SQLException {
+		List<Image> images = new ArrayList<>();
+		String prepared_query = "SELECT * FROM Image I JOIN User U ON (I.idUser = U.idUser) WHERE I.idUser = ? AND I.idImage NOT IN (SELECT idImage FROM AlbumImages WHERE idAlbum = ? )";
+		
+		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
+		preparedStatement.setInt(1, userId);
+		preparedStatement.setInt(2, albumId);
+		
+		ResultSet result = preparedStatement.executeQuery();
+		
+		while (result.next()) {
+			Image image_to_add = new Image();
+			image_to_add.setId(result.getInt("idImage"));
+			image_to_add.setTitle(result.getString("title"));
+			image_to_add.setText(result.getString("text"));
+			image_to_add.setDateOfCreation(result.getDate("date"));
+			image_to_add.setImgPath(result.getString("img_path"));
+			image_to_add.setUserId(result.getInt("idUser"));
+			
+			images.add(image_to_add);
+		}
+		
+		return images;
+	}
 }
