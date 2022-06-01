@@ -92,7 +92,7 @@ public class GoToEditAlbum extends HttpServlet {
 		
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
 		wctx.setVariable("images", images);
-		wctx.setVariable("albumName", album.getTitle());
+		wctx.setVariable("album", album);
 		
 		String source_path = "/WEB-INF/editalbum.html";
 		this.templateEngine.process(source_path, wctx, response.getWriter());

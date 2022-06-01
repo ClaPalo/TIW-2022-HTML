@@ -63,6 +63,7 @@ public class GoToHome extends HttpServlet {
 			albumsByOthers = albumDAO.getAlbumsByUser(user.getId(), false);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
 		}
 		
 		String home_source_path = "/WEB-INF/homepage.html";
@@ -73,6 +74,11 @@ public class GoToHome extends HttpServlet {
 		wctx.setVariable("other_albums", albumsByOthers);
 		this.templateEngine.process(home_source_path, wctx, response.getWriter());
 		
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 	
 }
