@@ -30,8 +30,15 @@
     <div align="center" th:if="${images.isEmpty()}">This album is empty :(</div>
     
     <div class="details" th:if="${mainImage}">
+    	<h2 th:text="${mainImage.title}"></h2>
+    	<h4 th:text="${mainImage.dateOfCreation}"></h4>
         <div align="center"><img src="" th:src="@{${mainImage.imgPath}}" alt="image" width=1000></div>
         <br><br>
+        <div th:if="${mainImage.text.length > 0}">
+        	<h4>Descrizione:</h4>
+        	<p th:text="${mainImage.text}">
+        </div>
+        
         <table class="Comments">
             <thead><tr>
                 <th align="left">Comments</th>
