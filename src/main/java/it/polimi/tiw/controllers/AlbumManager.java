@@ -132,7 +132,7 @@ public class AlbumManager extends HttpServlet {
 			
 		}
 		
-		response.sendRedirect(getServletContext().getContextPath() + "/Home");
+		response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumId + "&page=0");
 		
 		
 	}
