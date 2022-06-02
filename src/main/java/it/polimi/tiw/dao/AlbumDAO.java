@@ -73,4 +73,22 @@ public class AlbumDAO {
 		
 		preparedStatement.executeUpdate();
 	}
+	
+	/**
+	 * Get the ID of the user that owns that album
+	 * @param albumId ID of the album
+	 * @return ID of the owner. -1 if the album doesn't exist
+	 * @throws SQLException 
+	 */
+	public int getIdOwnerOfAlbum(int albumId) throws SQLException {
+		String prepared_query = "SELECT idUser FROM Album WHERE idAlbum = ?";
+		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
+		preparedStatement.setInt(1, albumId);
+		
+		ResultSet result = preparedStatement.executeQuery();
+		if (result.next()) {
+			return result.getInt("idUser");
+		}
+		return -1;
+	}
 }

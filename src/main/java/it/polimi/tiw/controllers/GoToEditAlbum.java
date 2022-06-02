@@ -61,26 +61,32 @@ public class GoToEditAlbum extends HttpServlet {
 		int albumId;
 		List<Image> images = null;
 		ImageDAO imageDAO = new ImageDAO(this.connection);
+
+		AlbumDAO albumDAO = new AlbumDAO(this.connection);
+		Album album;
 		
 		try {
 			albumId = Integer.parseInt(request.getParameter("albumId"));
+			//Controllo che l'utente sia il proprietario dell'album
+			if (albumDAO.getIdOwnerOfAlbum(albumId) != user.getId()) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You can't edit an album of someone else");
+				return;
+			}
 		} catch (NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing album parameters");
 			return;
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
 		}
 		
-		AlbumDAO albumDAO = new AlbumDAO(this.connection);
-		Album album;
 		
 		try {
 			album = albumDAO.getAlbumById(albumId);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
-		}
-		
-		//TODO Controlla che l'album appartenga all'utente
-		
+		}		
 		
 		
 		try {

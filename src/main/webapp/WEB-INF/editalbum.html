@@ -8,9 +8,13 @@
 </head>
 <body>
 	<h1 th:text="${album.title}">Nome album</h1>
+	<span class="home"><a href="Home">Back to home</a></span>
+
 	<br>
-	<p>Seleziona le immagini che vuoi aggiungere all'album:</p>
-	<form th:action="@{/AlbumManager(albumId=${album.id})}" method="POST">
+	<p>Seleziona le immagini che vuoi aggiungere all'album:</p><br>
+	<span th:if="${images.size == 0}">Non hai nessuna immagine da aggiungere :'(</span>
+	<form th:if="${images.size > 0}" th:action="@{/AlbumManager(albumId=${album.id})}" method="POST">
+
 		<div th:each="image : ${images}">
 			<input type="checkbox" name="imageId" th:value="${image.id}">
 			<img src="" th:src="@{${image.imgPath}}" alt="img1" width=120><br>

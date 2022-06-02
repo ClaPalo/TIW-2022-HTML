@@ -59,7 +59,7 @@
     </div>
     
     <br><br>
-    <a th:href="@{/EditAlbum(albumId=${album.id})}">Edit album</a>
+    <a th:href="@{/EditAlbum(albumId=${album.id})}" th:if="${owner}">Edit album</a><br>
     <span class="logout"><a href="Logout">Logout</a></span>
     
 </body>

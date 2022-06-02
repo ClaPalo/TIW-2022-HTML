@@ -21,6 +21,7 @@ import it.polimi.tiw.dao.AlbumDAO;
 import it.polimi.tiw.beans.Album;
 import it.polimi.tiw.dao.ImageDAO;
 import it.polimi.tiw.beans.Image;
+import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.CommentDAO;
 import it.polimi.tiw.beans.Comment;
 
@@ -47,6 +48,8 @@ public class GetAlbumInfo extends HttpServlet {
 		
 		ServletContext context = getServletContext();
 		
+		User user = (User) request.getSession().getAttribute("user");
+		
 		AlbumDAO albumDAO = new AlbumDAO(this.connection);
 		Album album = null;
 		ImageDAO imageDAO = new ImageDAO(this.connection);
@@ -54,6 +57,8 @@ public class GetAlbumInfo extends HttpServlet {
 		List<Image> images = null;
 		CommentDAO commentDAO = new CommentDAO(this.connection);
 		List<Comment> comments = null;
+		
+		boolean owner = false;
 		
 		Integer albumId = null, imageId = null, page = null;
 		
@@ -113,7 +118,17 @@ public class GetAlbumInfo extends HttpServlet {
 		}
 		
 		if (images.size() / 5 < page) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album page does not exist.");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album page does not exist."); //TODO Return?
+		}
+		
+		try {
+			if (albumDAO.getIdOwnerOfAlbum(albumId) == user.getId()) {
+				owner = true;
+			}
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+
 		}
 		
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
@@ -122,6 +137,7 @@ public class GetAlbumInfo extends HttpServlet {
 		wctx.setVariable("mainImage", mainImage);
 		wctx.setVariable("comments", comments);
 		wctx.setVariable("page", page);
+		wctx.setVariable("owner",  owner);
 		
 		String source_path = "/WEB-INF/albumpage.html";
 		this.templateEngine.process(source_path, wctx, response.getWriter());

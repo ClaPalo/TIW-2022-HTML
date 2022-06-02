@@ -25,6 +25,9 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
 		<filter-name>checklogin</filter-name>
 		<url-pattern>/Home</url-pattern>
 		<url-pattern>/AlbumInfo</url-pattern>
+		<url-pattern>/EditAlbum</url-pattern>
+		<url-pattern>/SubmitComment</url-pattern>
+		<url-pattern>/AlbumManager</url-pattern>
 	</filter-mapping>
 	<welcome-file-list>
    		<welcome-file>index.html</welcome-file>

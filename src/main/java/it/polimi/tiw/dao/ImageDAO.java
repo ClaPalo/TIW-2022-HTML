@@ -118,4 +118,21 @@ public class ImageDAO {
 		
 		return images;
 	}
+	
+	public List<Integer> getImagesIDByUserNotInAlbum(int userId, int albumId) throws SQLException {
+		List<Integer> images = new ArrayList<>();
+		String prepared_query = "SELECT idImage FROM Image I JOIN User U ON (I.idUser = U.idUser) WHERE I.idUser = ? AND I.idImage NOT IN (SELECT idImage FROM AlbumImages WHERE idAlbum = ? )";
+		
+		PreparedStatement preparedStatement = this.connection.prepareStatement(prepared_query);
+		preparedStatement.setInt(1, userId);
+		preparedStatement.setInt(2, albumId);
+		
+		ResultSet result = preparedStatement.executeQuery();
+		
+		while (result.next()) {
+			images.add(result.getInt("idImage"));
+		}
+		
+		return images;
+	}
 }

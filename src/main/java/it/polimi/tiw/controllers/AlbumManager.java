@@ -3,6 +3,8 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -50,6 +52,7 @@ public class AlbumManager extends HttpServlet {
 	}
 
 	/**
+	 * Create a new empty album
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -75,33 +78,50 @@ public class AlbumManager extends HttpServlet {
 	}
 
 	/**
+	 * Add images to an album
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String[] imageIDs = null;
 		int albumId;
+		AlbumDAO albumDAO = new AlbumDAO(this.connection);
 		User user = (User) request.getSession().getAttribute("user");
+		List<Integer> imagesAllowed = new ArrayList<>();
 		
 		try {
 			albumId = Integer.parseInt(request.getParameter("albumId"));
+			//Controllo che l'album appartenga all'utente
+			if (albumDAO.getIdOwnerOfAlbum(albumId) != user.getId()) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You can't edit an album of someone else");
+				return;
+			}
 		} catch (NumberFormatException | NullPointerException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing album ID");
 			return;
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
 		}
-
-		//TODO Controlla che l'album appartenga all'utente
 		
 		imageIDs = request.getParameterValues("imageId");
 		int imageId;
 		ImageDAO imageDAO = new ImageDAO(this.connection);
 		
+		//Ottengo la lista di tutte le immagini che questo utente può aggiungere al suo album
+		try {
+			imagesAllowed = imageDAO.getImagesIDByUserNotInAlbum(user.getId(), albumId);
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+		
 		for (String imageIdString : imageIDs) {
 			try {
 				imageId = Integer.parseInt(imageIdString);
 				
-				//TODO Controlla che le immagini appartengano all'utente e che non siano già nell'album
-
-				imageDAO.addImageToAlbumById(albumId, imageId);
+				//Controllo che l'immagine sia tra quelle autorizzate e nel caso la aggiungo all'album
+				if (imagesAllowed.remove(imageId) != null)
+					imageDAO.addImageToAlbumById(albumId, imageId);
 			} catch (NumberFormatException | NullPointerException e) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Sorry, something went wrong");
 				return;
