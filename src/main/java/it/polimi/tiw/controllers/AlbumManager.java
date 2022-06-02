@@ -120,7 +120,7 @@ public class AlbumManager extends HttpServlet {
 				imageId = Integer.parseInt(imageIdString);
 				
 				//Controllo che l'immagine sia tra quelle autorizzate e nel caso la aggiungo all'album
-				if (imagesAllowed.remove(imageId) != null)
+				if (imagesAllowed.remove((Object) imageId))
 					imageDAO.addImageToAlbumById(albumId, imageId);
 			} catch (NumberFormatException | NullPointerException e) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Sorry, something went wrong");

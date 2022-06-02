@@ -118,7 +118,8 @@ public class GetAlbumInfo extends HttpServlet {
 		}
 		
 		if (images.size() / 5 < page) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album page does not exist."); //TODO Return?
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album page does not exist."); 
+			return;
 		}
 		
 		try {
