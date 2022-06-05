@@ -7,12 +7,12 @@
     <title>Add Images To The Album</title>
 </head>
 <body>
-	<h1 th:text="${album.title}">Nome album</h1>
+	<h1 th:text="${album.title}">Album Name</h1>
 	<span class="home"><a href="Home">Back to home</a></span>
 
 	<br>
-	<p>Seleziona le immagini che vuoi aggiungere all'album:</p><br>
-	<span th:if="${images.size == 0}">Non hai nessuna immagine da aggiungere :'(</span>
+	<p>Select the images you want to add to the album:</p><br>
+	<span th:if="${images.size == 0}">You have no images to add :'(</span>
 	<form th:if="${images.size > 0}" th:action="@{/AlbumManager(albumId=${album.id})}" method="POST">
 
 		<div th:each="image : ${images}">
@@ -20,6 +20,6 @@
 			<img src="" th:src="@{${image.imgPath}}" alt="img1" width=120><br>
 		</div>
 		<br>
-		<input type="submit" value="Aggiungi">
+		<input type="submit" value="Add">
 	</form>
 </body>

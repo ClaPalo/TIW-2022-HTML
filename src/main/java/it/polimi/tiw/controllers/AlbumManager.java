@@ -65,6 +65,11 @@ public class AlbumManager extends HttpServlet {
 			return;
 		}
 		
+		if (albumName.length() > 45) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album title is too long.");
+			return;
+		}
+		
 		AlbumDAO albumDAO = new AlbumDAO(this.connection);
 		
 		try {
@@ -92,7 +97,7 @@ public class AlbumManager extends HttpServlet {
 			albumId = Integer.parseInt(request.getParameter("albumId"));
 			//Controllo che l'album appartenga all'utente
 			if (albumDAO.getIdOwnerOfAlbum(albumId) != user.getId()) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You can't edit an album of someone else");
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You can't edit someone else's album.");
 				return;
 			}
 		} catch (NumberFormatException | NullPointerException e) {
@@ -106,6 +111,11 @@ public class AlbumManager extends HttpServlet {
 		imageIDs = request.getParameterValues("imageId");
 		int imageId;
 		ImageDAO imageDAO = new ImageDAO(this.connection);
+		
+		if (imageIDs == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No images were selected.");
+			return;
+		}
 		
 		//Ottengo la lista di tutte le immagini che questo utente può aggiungere al suo album
 		try {

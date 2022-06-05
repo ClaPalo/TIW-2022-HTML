@@ -35,7 +35,7 @@
         <div align="center"><img src="" th:src="@{${mainImage.imgPath}}" alt="image" width=1000></div>
         <br><br>
         <div th:if="${mainImage.text.length > 0}">
-        	<h4>Descrizione:</h4>
+        	<h4>Description:</h4>
         	<p th:text="${mainImage.text}">
         </div>
         
@@ -66,7 +66,7 @@
     </div>
     
     <br><br>
-    <a th:href="@{/EditAlbum(albumId=${album.id})}" th:if="${owner}">Edit album</a><br>
+    <a th:href="@{/EditAlbum(albumId=${album.id})}" th:if="${owner}">Edit album</a><br><br>
     <span class="logout"><a href="Logout">Logout</a></span>
     
 </body>
