@@ -82,13 +82,13 @@ public class CreateUser extends HttpServlet {
 		
 		if (username == null || password == null || mail == null || repPassword == null ||
 				username.isEmpty() || password.isEmpty() || mail.isEmpty() || repPassword.isEmpty()) {
-			sendError(request, response, "Devi completare tutti i campi per poterti registrare!");
+			sendError(request, response, "You must complete all the fields to register");
 			return;
 		}
 		
 		
 		if (!isValidMail(mail)) {
-			sendError(request, response, "Mail non valida");
+			sendError(request, response, "Invalid email");
 			return;
 		}
 		
@@ -96,7 +96,7 @@ public class CreateUser extends HttpServlet {
 		
 		try {
 			if (userDao.isPresentUsername(username)) {
-				sendError(request, response, "Questo username e gia presente");
+				sendError(request, response, "This username is already present");
 				return;
 			} else if (userDao.isPresentMail(mail)) {
 				sendError(request, response, "This email is already present");
