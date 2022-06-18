@@ -82,13 +82,13 @@ public class CreateUser extends HttpServlet {
 		
 		if (username == null || password == null || mail == null || repPassword == null ||
 				username.isEmpty() || password.isEmpty() || mail.isEmpty() || repPassword.isEmpty()) {
-			sendError(request, response, "You must complete all the fields to register");
+			sendError(request, response, "Devi completare tutti i campi per poterti registrare!");
 			return;
 		}
 		
 		
 		if (!isValidMail(mail)) {
-			sendError(request, response, "Invalid email");
+			sendError(request, response, "Mail non valida");
 			return;
 		}
 		
@@ -96,16 +96,16 @@ public class CreateUser extends HttpServlet {
 		
 		try {
 			if (userDao.isPresentUsername(username)) {
-				sendError(request, response, "This username is already present");
+				sendError(request, response, "Questo username è già presente");
 				return;
 			} else if (userDao.isPresentMail(mail)) {
-				sendError(request, response, "This email is already present");
+				sendError(request, response, "Questa mail è già presente");
 				return;
 			} else if (password.length() < 5) {
-				sendError(request, response, "Password must be at least 5 characters long");
+				sendError(request, response, "La password deve avere almeno 5 caratteri");
 				return;
 			} else if (!password.equals(repPassword)) {
-				sendError(request, response, "Passwords do not coincide");
+				sendError(request, response, "Le password non coincidono");
 				return;
 			}
 		} catch (SQLException e) {
@@ -123,7 +123,7 @@ public class CreateUser extends HttpServlet {
 		
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("ErrorMsg", "User created");
+		ctx.setVariable("ErrorMsg", "Utente creato");
 		String path = "/index.html";
 		templateEngine.process(path, ctx, response.getWriter());
 
