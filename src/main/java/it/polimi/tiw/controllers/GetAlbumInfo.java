@@ -94,6 +94,7 @@ public class GetAlbumInfo extends HttpServlet {
 			return;
 		}
 		
+		//L'utente ha selezionato un'immagine
 		if (imageId != null) {
 			
 			boolean isInAlbum = false;

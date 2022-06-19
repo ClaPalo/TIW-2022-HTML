@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -65,6 +67,12 @@ public class AlbumManager extends HttpServlet {
 			return;
 		}
 		
+		if (!isValidName(albumName)) {
+			String message = "Album name not valid";
+			response.sendRedirect(getServletContext().getContextPath() + "/Home?message=" + message);
+			return;
+		}
+		
 		if (albumName.length() > 45) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album title is too long.");
 			return;
@@ -113,7 +121,7 @@ public class AlbumManager extends HttpServlet {
 		ImageDAO imageDAO = new ImageDAO(this.connection);
 		
 		if (imageIDs == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No images were selected.");
+			response.sendRedirect(getServletContext().getContextPath() + "/AlbumInfo?id=" + albumId + "&page=0");
 			return;
 		}
 		
@@ -146,5 +154,16 @@ public class AlbumManager extends HttpServlet {
 		
 		
 	}
+	
+	private boolean isValidName(String name) {
+		String nameRegex = "^[a-zA-Z0-9_+&*-]";
+	              
+		Pattern pat = Pattern.compile(nameRegex);
+		if (name == null)
+			return false;
+		return pat.matcher(name).matches();
+	}
 
 }
+
+

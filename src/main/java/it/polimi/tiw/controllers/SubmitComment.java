@@ -73,12 +73,12 @@ public class SubmitComment extends HttpServlet {
 		
 		
 		if (user == null || text == null || text.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing user or text."); //TODO Manda solo un messaggino a schermo
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing user or text.");
 			return;
 		}
 		
 		if (text.length() > 180) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is too long."); //TODO manda messaggino forse
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is too long.");
 			return;
 		}
 		

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -57,6 +58,9 @@ public class GoToHome extends HttpServlet {
 		AlbumDAO albumDAO = new AlbumDAO(this.connection);
 		List<Album> albumsByMe = null;
 		List<Album> albumsByOthers = null;
+		String message = null;
+		
+		message = StringEscapeUtils.escapeJava(request.getParameter("message"));
 		
 		try {
 			albumsByMe = albumDAO.getAlbumsByUser(user.getId(), true);
@@ -72,6 +76,9 @@ public class GoToHome extends HttpServlet {
 		wctx.setVariable("user", user);
 		wctx.setVariable("user_albums", albumsByMe);
 		wctx.setVariable("other_albums", albumsByOthers);
+		if (message != null) {
+			wctx.setVariable("message", message);
+		}
 		this.templateEngine.process(home_source_path, wctx, response.getWriter());
 		
 	}

@@ -36,11 +36,9 @@ public class CreateUser extends HttpServlet {
      */
     public CreateUser() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
-    	//TODO Usa handler
 		ServletContext servletContext = getServletContext();
 		this.connection = ConnectionHandler.getConnection(servletContext);
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
