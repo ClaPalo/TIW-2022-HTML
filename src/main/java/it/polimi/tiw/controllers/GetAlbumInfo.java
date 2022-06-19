@@ -26,7 +26,7 @@ import it.polimi.tiw.dao.CommentDAO;
 import it.polimi.tiw.beans.Comment;
 
 import java.util.List;
-//TODO: Add image info etc when image is opened
+
 @WebServlet("/AlbumInfo")
 public class GetAlbumInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -117,7 +117,7 @@ public class GetAlbumInfo extends HttpServlet {
 			return;
 		}
 		
-		if (images.size() / 5 < page) {
+		if (page < 0 || images.size() / 5 < page ) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Album page does not exist."); 
 			return;
 		}

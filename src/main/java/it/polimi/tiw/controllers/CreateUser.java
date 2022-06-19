@@ -2,13 +2,11 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +19,8 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
+import it.polimi.tiw.utils.ConnectionHandler;
 
 /**
  * Servlet implementation class CreateUser
@@ -43,20 +41,8 @@ public class CreateUser extends HttpServlet {
     
     public void init() throws ServletException {
     	//TODO Usa handler
-    	try {
-			ServletContext context = getServletContext();
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			throw new UnavailableException("Can't load the driver");
-		} catch (SQLException e) {
-			throw new UnavailableException("Could't connect");
-		}
 		ServletContext servletContext = getServletContext();
+		this.connection = ConnectionHandler.getConnection(servletContext);
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
