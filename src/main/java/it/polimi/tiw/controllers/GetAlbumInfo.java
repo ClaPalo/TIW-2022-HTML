@@ -20,6 +20,7 @@ import org.thymeleaf.context.WebContext;
 import it.polimi.tiw.dao.AlbumDAO;
 import it.polimi.tiw.beans.Album;
 import it.polimi.tiw.dao.ImageDAO;
+import it.polimi.tiw.dao.UserDAO;
 import it.polimi.tiw.beans.Image;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.CommentDAO;
@@ -57,6 +58,8 @@ public class GetAlbumInfo extends HttpServlet {
 		List<Image> images = null;
 		CommentDAO commentDAO = new CommentDAO(this.connection);
 		List<Comment> comments = null;
+		UserDAO userDAO = new UserDAO(this.connection);
+		String ownerUsername = null;
 		
 		boolean owner = false;
 		
@@ -132,6 +135,13 @@ public class GetAlbumInfo extends HttpServlet {
 
 		}
 		
+		try {
+			ownerUsername = userDAO.getUsernameFromId(album.getUserId());
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+		
 		WebContext wctx = new WebContext(request, response, context, request.getLocale());
 		wctx.setVariable("album", album);
 		wctx.setVariable("images", images);
@@ -139,6 +149,7 @@ public class GetAlbumInfo extends HttpServlet {
 		wctx.setVariable("comments", comments);
 		wctx.setVariable("page", page);
 		wctx.setVariable("owner",  owner);
+		wctx.setVariable("ownerUsername", ownerUsername);
 		
 		String source_path = "/WEB-INF/albumpage.html";
 		this.templateEngine.process(source_path, wctx, response.getWriter());
