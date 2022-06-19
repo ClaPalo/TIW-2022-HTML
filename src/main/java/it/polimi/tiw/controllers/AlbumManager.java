@@ -68,7 +68,7 @@ public class AlbumManager extends HttpServlet {
 		}
 		
 		if (!isValidName(albumName)) {
-			String message = "Album name not valid";
+			String message = "Invalid album name";
 			response.sendRedirect(getServletContext().getContextPath() + "/Home?message=" + message);
 			return;
 		}
@@ -156,7 +156,7 @@ public class AlbumManager extends HttpServlet {
 	}
 	
 	private boolean isValidName(String name) {
-		String nameRegex = "^[a-zA-Z0-9_+&*-]";
+		String nameRegex = "^[a-zA-Z0-9]";
 	              
 		Pattern pat = Pattern.compile(nameRegex);
 		if (name == null)
