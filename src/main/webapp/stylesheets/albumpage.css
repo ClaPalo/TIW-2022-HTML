@@ -1,0 +1,17 @@
+.prev {
+	position: absolute;
+	left: 250px;
+	top: 223px;
+}
+
+.thumbnail {
+	text-align: center;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.next {
+	position: absolute;
+	right: 250px;
+	top: 223px;
+}
