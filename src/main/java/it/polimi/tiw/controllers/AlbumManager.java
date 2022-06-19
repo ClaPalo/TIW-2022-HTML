@@ -156,12 +156,9 @@ public class AlbumManager extends HttpServlet {
 	}
 	
 	private boolean isValidName(String name) {
-		String nameRegex = "^[a-zA-Z0-9]";
-	              
-		Pattern pat = Pattern.compile(nameRegex);
-		if (name == null)
+		if (name.startsWith(" "))
 			return false;
-		return pat.matcher(name).matches();
+		return true;
 	}
 
 }

@@ -52,7 +52,7 @@ public class CreateUser extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doPost(request, response);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class CreateUser extends HttpServlet {
 		
 		
 		if (!isValidMail(mail)) {
-			sendError(request, response, "Mail non valida");
+			sendError(request, response, "Invalid email");
 			return;
 		}
 		
@@ -80,16 +80,16 @@ public class CreateUser extends HttpServlet {
 		
 		try {
 			if (userDao.isPresentUsername(username)) {
-				sendError(request, response, "Questo username è già presente");
+				sendError(request, response, "This username already exists");
 				return;
 			} else if (userDao.isPresentMail(mail)) {
-				sendError(request, response, "Questa mail è già presente");
+				sendError(request, response, "This email already exists");
 				return;
 			} else if (password.length() < 5) {
-				sendError(request, response, "La password deve avere almeno 5 caratteri");
+				sendError(request, response, "Password must be at least 5 characters long");
 				return;
 			} else if (!password.equals(repPassword)) {
-				sendError(request, response, "Le password non coincidono");
+				sendError(request, response, "Passwords do not coincide");
 				return;
 			}
 		} catch (SQLException e) {
@@ -102,7 +102,6 @@ public class CreateUser extends HttpServlet {
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
-
 		}
 		
 		ServletContext servletContext = getServletContext();

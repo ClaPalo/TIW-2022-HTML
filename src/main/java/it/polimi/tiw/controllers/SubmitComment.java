@@ -12,12 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.beans.Image;
 import it.polimi.tiw.dao.CommentDAO;
@@ -30,7 +24,6 @@ import it.polimi.tiw.dao.ImageDAO;
 public class SubmitComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
-	private TemplateEngine templateEngine;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -44,12 +37,6 @@ public class SubmitComment extends HttpServlet {
     	ServletContext servletContext = getServletContext();
     	
     	this.connection = ConnectionHandler.getConnection(servletContext);
-    	
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 	}
 
 	/**
